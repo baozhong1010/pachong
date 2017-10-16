@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from openpyxl.writer.excel import ExcelWriter
 from openpyxl import load_workbook  
 from openpyxl.utils import coordinate_from_string, column_index_from_string, get_column_letter
-
+from openpyxl.styles import Border,Side
 #登录部分
 
 root_url = 'http://172.16.203.12/zentao/user-login.html'
@@ -37,44 +37,33 @@ for plan in plans:
     l = list(plan.stripped_strings)
     name = l[1]
     status = l[2]
+    time = l[3]
     plan = l[-1]
-    print name,status,plan,'\n'
+    if plan != '100%':
+        print name,status,time,plan,'\n'
 
 
 
 
-'''
+
 #填写表格
-def style_range(ws, cell_range, style):
-    """
-    :param ws:  Excel worksheet instance
-    :param range: An excel range to style (e.g. A1:F20)
-    :param style: An openpyxl Style object
-    """
+border = Border(
+    left=Side(style='medium',color='FF000000'),
+    right=Side(style='medium',color='FF000000'),
+    top=Side(style='medium',color='FF000000'),
+    bottom=Side(style='medium',color='FF000000'),
+    diagonal=Side(style='medium',color='FF000000'),
+    diagonal_direction=0,outline=Side(style='medium',
+    color='FF000000'),
+    vertical=Side(style='medium',color='FF000000'),
+    horizontal=Side(style='medium',color='FF000000'))
 
-    start_cell, end_cell = cell_range.split(':')
-    start_coord = coordinate_from_string(start_cell)
-    start_row = start_coord[1]
-    start_col = column_index_from_string(start_coord[0])
-    end_coord = coordinate_from_string(end_cell)
-    end_row = end_coord[1]
-    end_col = column_index_from_string(end_coord[0])
-
-    for row in range(start_row, end_row + 1):
-        for col_idx in range(start_col, end_col + 1):
-            col = get_column_letter(col_idx)
-            ws.cell('%s%s' % (col, row)).style = style
 
 wb = load_workbook(filename = r'OE_Cloud_PMC_2017Q3.xlsx')
 ws = wb.active
-ws.merge_cells('B22:D22')
-my_cell = ws.cell('B22')
-my_cell.value = name
+ws['B22'] = name
+ws['E22'] = status + plan
 
-style_range(ws,'B22:D22',style(alignment=Alignment(horizontal='center'),
-                               border=Border(top=Side(border_style='thin', color=colors.BLACK),
-                                             left=Side(border_style='thin', color=colors.BLACK),
-                                             bottom=Side(border_style='thin', color=colors.BLACK),
-                                             right=Side(border_style='thin', color=colors.BLACK), )),)
 wb.save('OE_Cloud_PMC_2017Q3.xlsx')
-'''
+
+
