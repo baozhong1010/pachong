@@ -37,20 +37,21 @@ soup = BeautifulSoup(f.content,'lxml')
 
 plans = soup.find_all('tr',class_='text-center')
 
-
+names = []
+times = []
+jindu = []
 for plan in plans:
     l = list(plan.stripped_strings)
     status = l[2]
     if status == u'\u8fdb\u884c\u4e2d':
-        names = l[1]
+        names.append(l[1])
         statuss = l[2]
-        times = l[3]
-        plans = l[-1]
-        print names,status,times,plans,'\n'
+        times.append(l[3])
+        jindu.append(l[-1])
+        print l[1],statuss,l[3],l[-1],'\n'
 
 
 #names只在上面输出能全部输出，我想再调用names写到表格里发现永远只有一个值，没有其他值了
-print names
 
 
 #填写表格
@@ -108,6 +109,13 @@ patch_worksheet()
 
 wb = load_workbook('OE_Cloud_PMC_2017Q3.xlsx')
 ws = wb.active
-ws['B22'] = names
-ws['E22'] = status + plans
+ws['B22'] = names[0]
+ws['B23'] = names[1]
+ws['B24'] = names[2]
+ws['E22'] = u'\u8fdb\u884c\u4e2d' + jindu[0]
+ws['E23'] = u'\u8fdb\u884c\u4e2d' + jindu[1]
+ws['E24'] = u'\u8fdb\u884c\u4e2d' + jindu[2]
 wb.save('OE_Cloud_PMC_2017Q3.xlsx')
+
+
+
