@@ -49,8 +49,12 @@ for plan in plans:
         print names,status,times,plans,'\n'
 
 
+#names只在上面输出能全部输出，我想再调用names写到表格里发现永远只有一个值，没有其他值了
+print names
+
+
 #填写表格
-'''
+
 def patch_worksheet():
     """This monkeypatches Worksheet.merge_cells to remove cell deletion bug
     https://bitbucket.org/openpyxl/openpyxl/issues/365/styling-merged-cells-isnt-working
@@ -100,9 +104,6 @@ def patch_worksheet():
 
 
 patch_worksheet()
-
-'''
-
 
 
 wb = load_workbook('OE_Cloud_PMC_2017Q3.xlsx')
